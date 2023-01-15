@@ -14,7 +14,7 @@ using namespace std;
 
 int main()
 {
-    String folderpath = "C://INCARLOPSA//PROYECTOS//1_VISION_CERRADORAS//imgs//*.bmp";
+    String folderpath = "C://imgs//*.bmp";
     vector<String> filenames;
 
     glob(folderpath, filenames);
