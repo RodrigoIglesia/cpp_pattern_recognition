@@ -14,6 +14,31 @@ using namespace std;
 
 int main()
 {
+    // ORB feature detector.
+    Ptr<ORB> orb_detector = ORB::create();
+    // KeyPoints and descriptors of them, for templete and image to analize.
+    vector<KeyPoint> kp_template, kp_roi;
+    Mat des_template, des_roi;
+
+    // Load template image.
+    Mat img_template = imread("template.bmp", IMREAD_COLOR);
+    if (img_template.empty())
+    {
+        cout << "Could not read the image: " << "template.bmp" << endl;
+        return 1;
+    }
+
+    // Detect KeyPoints and descriptors of the template.
+    Mat img_template_gray;
+    cvtColor(img_template, img_template_gray, COLOR_BGR2GRAY);
+    orb_detector->detect(img_template_gray, kp_template, des_template);
+    Mat img_template_kp;
+    drawKeypoints(img_template, kp_template, img_template_kp, Scalar(0, 255, 0));
+
+    imshow("Template KeyPoints.", img_template_kp);
+    waitKey();
+
+    // Load images to find patterns.
     String folderpath = "C://imgs//*.bmp";
     vector<String> filenames;
 
@@ -54,8 +79,13 @@ int main()
                 // Extract the ROI from the original image with the window.
                 Mat roi = img(window);
 
+                // Detect KeyPoints of ROI.
+
                 imshow("ROI", roi);
                 waitKey(100);
+
+                // Get KeyPoints and descriptors of each roi.
+
             }
         }
     }
