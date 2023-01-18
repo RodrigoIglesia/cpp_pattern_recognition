@@ -17,8 +17,8 @@ int main()
     // ORB feature detector.
     Ptr<ORB> orb_detector = ORB::create();
     // KeyPoints and descriptors of them, for templete and image to analize.
-    vector<KeyPoint> kp_template, kp_roi;
-    Mat des_template, des_roi;
+    vector<KeyPoint> kp_template;
+    Mat des_template;
 
     // Load template image.
     Mat img_template = imread("template.bmp", IMREAD_COLOR);
@@ -73,19 +73,28 @@ int main()
                 
                 // Draw sliding window in original image copy.
                 rectangle(img_slides, window, Scalar(0, 255, 0), 2);
-                imshow("Sliding window", img_slides);
-                waitKey(100);
+                //imshow("Sliding window", img_slides);
+                //waitKey(100);
 
                 // Extract the ROI from the original image with the window.
                 Mat roi = img(window);
 
                 // Detect KeyPoints of ROI.
 
-                imshow("ROI", roi);
-                waitKey(100);
+                //imshow("ROI", roi);
+                //waitKey(100);
 
                 // Get KeyPoints and descriptors of each roi.
+                Mat roi_gray;
+                cvtColor(roi, roi_gray, COLOR_BGR2GRAY);
+                vector<KeyPoint> kp_roi;
+                Mat des_roi;
+                orb_detector->detect(roi_gray, kp_roi, des_roi);
+                Mat img_roi_kp;
+                drawKeypoints(roi, kp_roi, img_roi_kp, Scalar(0, 255, 0));
 
+                imshow("KeyPoints roi", img_roi_kp);
+                waitKey();
             }
         }
     }
